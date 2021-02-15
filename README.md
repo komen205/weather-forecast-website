@@ -1,7 +1,7 @@
 # How to build:
-## Other dependencies
+### Other dependencies
 `npm install`
-## Development setup
+### Development setup
 `npm run dev`
 
 ## Live demo:
