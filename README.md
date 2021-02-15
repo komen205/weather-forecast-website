@@ -1,9 +1,8 @@
-<h1>How to build:</h1><br>
-```
-npm install
-```<br>
-```npm run dev```<br>
+# How to build:
+## Other dependencies
+`npm install`
+## Development setup
+`npm run dev`
 
-
-<h2>Live demo:</h2><br>
+## Live demo:
 https://weather-forecast-website.vercel.app/
