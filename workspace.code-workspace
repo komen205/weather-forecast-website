@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"name": "weather-forecast-website",
+			"path": "."
+		},
+		{
+			"name": "weather_icon_set",
+			"path": "..\\..\\react-weather-widget-master\\public\\weather_icon_set"
+		}
+	],
+	"settings": {}
+}
