@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import { useEffect, useState } from 'react';
-import  WeatherWidget  from '../components/WeatherWidget';
+import WeatherWidget from '../components/WeatherWidget';
 
 
 
@@ -12,10 +12,35 @@ export default function Home() {
       timeout: 5000,
       maximumAge: 0
     };
+    async function ipgrab(){
+      var request = new XMLHttpRequest();
+      const api = '5629d244e09540b1837e660ee924bb48';
+      request.open('GET', `https://api.ipgeolocation.io/ipgeo?apiKey=${api}`);
+    
+      request.setRequestHeader('Accept', 'application/json');
+    
+      request.onreadystatechange = function () {
+        if (this.readyState === 4) {
+          console.log(JSON.parse(this.responseText));
+          
+          const pos = {
+            latitude: JSON.parse(this.responseText).latitude,
+            longitude: JSON.parse(this.responseText).longitude,
+          };
+          success(pos);
 
+        }
+      };
+    
+      request.send();
+
+    }
     async function success(pos) {
-      var crd = pos.coords;
+      var crd = pos;
+      console.log(pos);
       const url = `https://api.openweathermap.org/data/2.5/onecall?lat=${crd.latitude}&lon=${crd.longitude}&lang=pt&units=metric&appid=1eb616ffcdbab7f52753d435c4b95522`;
+      console.log(url);
+
       const response = await fetch(url);
       const data = await response.json();
       //const stringObject = JSON.stringify(data)
@@ -30,12 +55,14 @@ export default function Home() {
     function error(err) {
       console.warn(`ERROR(${err.code}): ${err.message}`);
     }
+    ipgrab();
     navigator.geolocation.getCurrentPosition(success, error, options);
 
   }, []);
 
 
   if (!weather) return <div>Waiting for location...</div>
+
   if (weather != null) {
     const temp = weather.daily.map(hine => hine.temp.eve);
     const fullDate = weather.daily.map(home => new Date(home.dt * 1000));
@@ -80,16 +107,16 @@ export default function Home() {
         </Head>
 
         <main>
-         
 
 
-        <WeatherWidget
-          config={{
-            unit: 'metric',
-            locale: 'zh-tw',
-          }}
-          forecast={weather.daily}
-        />
+
+          <WeatherWidget
+            config={{
+              unit: 'metric',
+              locale: 'zh-tw',
+            }}
+            forecast={weather.daily}
+          />
 
         </main>
 
