@@ -21,6 +21,7 @@ export default function Home() {
     
       request.onreadystatechange = function () {
         if (this.readyState === 4) {
+          console.log(this.responseText);
           console.log(JSON.parse(this.responseText));
           
           const pos = {
