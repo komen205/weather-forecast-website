@@ -53,7 +53,7 @@ export default function Home() {
       console.warn(`ERROR(${err.code}): ${err.message}`);
     }
     ipgrab();
-    navigator.geolocation.getCurrentPosition(success, error, options);
+    //navigator.geolocation.getCurrentPosition(success, error, options);
 
   }, []);
 
