@@ -15,16 +15,22 @@ export default function Home() {
     async function ipgrab(){
       const api = '5629d244e09540b1837e660ee924bb48';
       const url = `https://api.ipgeolocation.io/ipgeo?apiKey=${api}`;
-
       var request = new XMLHttpRequest();
-      request.open('GET', url);
+      request.open('GET', `https://api.ipgeolocation.io/ipgeo?apiKey=${api}`);
     
       request.setRequestHeader('Accept', 'application/json');
-    
+      request.setRequestHeader('Content-Type', 'application/json');
+
       request.onreadystatechange = function () {
         if (this.readyState === 4) {
           console.log(this.responseText);
-;
+          console.log(JSON.parse(this.responseText));
+          
+          const pos = {
+            latitude: JSON.parse(this.responseText).latitude,
+            longitude: JSON.parse(this.responseText).longitude,
+          };
+          success(pos);
 
         }
       };
@@ -53,7 +59,7 @@ export default function Home() {
       console.warn(`ERROR(${err.code}): ${err.message}`);
     }
     ipgrab();
-    //navigator.geolocation.getCurrentPosition(success, error, options);
+    navigator.geolocation.getCurrentPosition(success, error, options);
 
   }, []);
 
