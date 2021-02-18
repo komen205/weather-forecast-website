@@ -36,7 +36,7 @@ export default function Home() {
 
     }
     async function success(pos) {
-      var crd = pos;
+      var crd = pos.coords || pos;
       console.log(pos);
       const url = `https://api.openweathermap.org/data/2.5/onecall?lat=${crd.latitude}&lon=${crd.longitude}&lang=pt&units=metric&appid=1eb616ffcdbab7f52753d435c4b95522`;
       console.log(url);
