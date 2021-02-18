@@ -13,9 +13,11 @@ export default function Home() {
       maximumAge: 0
     };
     async function ipgrab(){
-      var request = new XMLHttpRequest();
       const api = '5629d244e09540b1837e660ee924bb48';
-      request.open('GET', `https://api.ipgeolocation.io/ipgeo?apiKey=${api}`);
+      const url = `https://api.ipgeolocation.io/ipgeo?apiKey=${api}`;
+
+      var request = new XMLHttpRequest();
+      request.open('GET', url);
     
       request.setRequestHeader('Accept', 'application/json');
     
