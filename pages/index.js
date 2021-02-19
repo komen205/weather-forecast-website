@@ -15,33 +15,24 @@ export default function Home() {
       maximumAge: 0
     };
     async function ipgrab() {
-      let h = new Headers();
-      h.append('Accept', 'application/json');
-      h.append('Content-Type', 'application/json');
-
-      var myInit = {
-        method: 'GET',
-        headers: h,
-        cache: 'default',
-        mode: 'cors'
-      };
-
       const api = '5629d244e09540b1837e660ee924bb48';
       const url = `https://api.ipgeolocation.io/ipgeo?apiKey=${api}`;
-      const myRequest = await fetch(url);
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
 
-
-
-      const response = await fetch(url);
-      const data = await response.json();
-
-      const dataObject = {
-        coords: {
-          latitude: data.latitude,
-          longitude: data.longitude,
+        const dataObject = {
+          coords: {
+            latitude: data.latitude,
+            longitude: data.longitude,
+          }
         }
+        setIp(dataObject);
       }
-      setIp(dataObject);
+      catch (e) {
+        console.log('Please disable your adblock!');
+      }
+
 
     }
 
@@ -69,7 +60,7 @@ export default function Home() {
       setWeather(data);
 
     }
-    catch (e) { console.log('error' + e); }
+    catch (e) {  }
   }
   success(ip);
 
