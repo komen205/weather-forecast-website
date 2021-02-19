@@ -6,54 +6,45 @@ import WeatherWidget from '../components/WeatherWidget';
 
 export default function Home() {
   const [weather, setWeather] = useState(null);
+  const [ip, setIp] = useState('');
+
   useEffect(() => {
     var options = {
       enableHighAccuracy: true,
       timeout: 5000,
       maximumAge: 0
     };
-    async function ipgrab(){
+    async function ipgrab() {
+      let h = new Headers();
+      h.append('Accept', 'application/json');
+      h.append('Content-Type', 'application/json');
+
+      var myInit = {
+        method: 'GET',
+        headers: h,
+        cache: 'default',
+        mode: 'cors'
+      };
+
       const api = '5629d244e09540b1837e660ee924bb48';
       const url = `https://api.ipgeolocation.io/ipgeo?apiKey=${api}`;
-      var request = new XMLHttpRequest();
-      request.open('GET', `https://api.ipgeolocation.io/ipgeo?apiKey=${api}`);
-    
-      request.setRequestHeader('Accept', 'application/json');
-      request.setRequestHeader('Content-Type', 'application/json');
+      var myRequest = new Request(url, myInit);
 
-      request.onreadystatechange = function () {
-        if (this.readyState === 4) {
-          console.log(this.responseText);
-          console.log(JSON.parse(this.responseText));
-          
-          const pos = {
-            latitude: JSON.parse(this.responseText).latitude,
-            longitude: JSON.parse(this.responseText).longitude,
-          };
-          success(pos);
 
-        }
-      };
-    
-      request.send();
 
-    }
-    async function success(pos) {
-      var crd = pos.coords || pos;
-      console.log(pos);
-      const url = `https://api.openweathermap.org/data/2.5/onecall?lat=${crd.latitude}&lon=${crd.longitude}&lang=pt&units=metric&appid=1eb616ffcdbab7f52753d435c4b95522`;
-      console.log(url);
-
-      const response = await fetch(url);
+      const response = await fetch(myRequest);
       const data = await response.json();
-      //const stringObject = JSON.stringify(data)
 
-      if (!response.ok) {
-        console.log('Something went wrong', data);
+      const dataObject = {
+        coords: {
+          latitude: data.latitude,
+          longitude: data.longitude,
+        }
       }
+      setIp(dataObject);
 
-      setWeather(data);
     }
+
 
     function error(err) {
       console.warn(`ERROR(${err.code}): ${err.message}`);
@@ -62,7 +53,25 @@ export default function Home() {
     navigator.geolocation.getCurrentPosition(success, error, options);
 
   }, []);
+  var crd = '';
+  async function success(pos) {
+    try {
+      var crd = pos.coords;
+      const url = `https://api.openweathermap.org/data/2.5/onecall?lat=${crd.latitude}&lon=${crd.longitude}&lang=pt&units=metric&appid=1eb616ffcdbab7f52753d435c4b95522`;
 
+      const response = await fetch(url);
+      const data = await response.json();
+      //const stringObject = JSON.stringify(data)
+
+      if (!response.ok) {
+        console.log('Something went wrong', data);
+      }
+      setWeather(data);
+
+    }
+    catch (e) { console.log('error' + e); }
+  }
+  success(ip);
 
   if (!weather) return <div>Waiting for location...</div>
 
@@ -97,8 +106,6 @@ export default function Home() {
       }
 
     }
-
-
     return (
 
 
