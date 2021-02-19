@@ -28,11 +28,11 @@ export default function Home() {
 
       const api = '5629d244e09540b1837e660ee924bb48';
       const url = `https://api.ipgeolocation.io/ipgeo?apiKey=${api}`;
-      var myRequest = new Request(url, myInit);
+      const myRequest = await fetch(url);
 
 
 
-      const response = await fetch(myRequest);
+      const response = await fetch(url);
       const data = await response.json();
 
       const dataObject = {
