@@ -20,6 +20,7 @@ const WeatherBannerTab = ({
   forecastIdx,
   forecast,
   unit,
+  city,
   onLocationClick,
 }) => {
   const [tabIndex, setTabIndex] = useState(0);
@@ -29,7 +30,7 @@ const WeatherBannerTab = ({
   const renderTabPanel = (item, displayUnit) => {
     return (
       <TabPanel key={`tp${item.dt}`}>
-        <WeatherBanner forecastNow={item} unit={displayUnit} />
+        <WeatherBanner city={city} forecastNow={item} unit={displayUnit} />
       </TabPanel>
     );
   };
@@ -73,20 +74,8 @@ const WeatherBannerTab = ({
         hoverBorderColor: 'rgba(255,99,132,1)',
         data: [forecast[forecastIdx].temp.morn,forecast[forecastIdx].temp.day,forecast[forecastIdx].temp.eve,forecast[forecastIdx].temp.night]
       }
-    ],
-    options: {
-      legend: {
-        display: false
-      }, tooltips: {
-        callbacks: {
-          label: function (tooltipItem) {
-            return tooltipItem.yLabel;
-          }
-        }
-      }
+    ]
 
-
-    }
   };
 
   const options = {

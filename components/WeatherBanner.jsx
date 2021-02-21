@@ -12,37 +12,43 @@ import iconCodeMapping from './WeatherIcon';
  * @param {string} unit the unit format for figures, only accepting 'metric' for now
  * @param {locale} locale locale for time formating
  */
-const WeatherBanner = ({ forecastNow, unit, locale }) => (
+const WeatherBanner = ({ forecastNow, unit, locale, city }) => (
   <div>
-    <h5>
-      { new Date(forecastNow.dt * 1000).toDateString()}
-    </h5>
     <BannerContainer>
-      <BannerIcon src={iconCodeMapping[forecastNow.weather[0].icon]} />
-      <Temperature>{forecastNow.temp.eve}</Temperature>
+      <Temperature>{forecastNow.temp.eve.toFixed(0)}</Temperature>
       <Unit>
-        &deg;
-        {unit === 'metric' ? 'C' : 'F'}
+        {unit === 'metric' ? 'º' : 'F'}
       </Unit>
-      <div style={{ flex: '1' }} />
-      <DetailContainer>
-        <InfoText>
-          Clouds:
-          <b>{forecastNow.clouds} %</b>
-        </InfoText>
-        <InfoText>
-          Humidity: <b>{forecastNow.humidity} %</b>
-        </InfoText>
-        <InfoText>
-          Wind:{' '}
-          <b>
-            {forecastNow.wind_speed} 
-            {unit === 'metric' ? 'm/s' : 'mph'}
-          </b>
-        </InfoText>
-      </DetailContainer>
+      <TextContainer>
+        <CityText>{city}</CityText>
+        <HourText>{new Date(forecastNow.dt * 1000).toDateString()}</HourText>
+      </TextContainer>
+
+      <BannerIcon src={iconCodeMapping[forecastNow.weather[0].icon]} />
+
+
+
     </BannerContainer>
-    
+
+    <DetailContainer>
+      <DetailsTitle>Weather Details</DetailsTitle>
+      <InfoText>
+        Clouds:
+          <DetailsText>{forecastNow.clouds} %</DetailsText>
+      </InfoText>
+      <InfoText>
+        Humidity: <DetailsText>{forecastNow.humidity} %</DetailsText>
+      </InfoText>
+      <InfoText>
+        Wind:<DetailsText>
+          {forecastNow.wind_speed}
+          {unit === 'metric' ? 'm/s' : 'mph'}</DetailsText>
+
+      </InfoText>
+      <Line></Line>
+      <DetailsTitle>Temperature</DetailsTitle>
+    </DetailContainer>
+
   </div>
 );
 
@@ -53,7 +59,17 @@ WeatherBanner.defaultProps = {
 
 
 export default WeatherBanner;
+const Line = styled.hr``;
+const CityText = styled.div`
+  font-size:50px;
+  margin-top: 1.0rem;
+`;
 
+const TextContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-left: 0.5rem;
+`;
 const BannerContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -62,24 +78,42 @@ const BannerContainer = styled.div`
 const BannerIcon = styled.img`
   width: 5rem;
   height: 5rem;
+  margin-top: 1.0rem;
+  margin-left:auto;
+  text-align:left;
 `;
 
 const Temperature = styled.div`
-  font-size: 3rem;
+  font-size: 96px;
   margin-left: 0.5rem;
-  font-weight: bold;
 `;
 
 const Unit = styled.div`
-  font-size: 1rem;
-  margin-top: 0.7rem;
+  font-size: 96px;
+`;
+const HourText = styled.div`
+  font-size: 14px;
+  font-weight: 400;
 `;
 
 const DetailContainer = styled.div`
-  display: flex;
+  display: block;
   flex-direction: column;
 `;
 
 const InfoText = styled.div`
+  font-weight: 300;
+  display:flex;
+  justify-content:space-between;
+  padding-bottom:24px;
+  font-size:20px;
+`;
+const DetailsText = styled.div`
   text-align: right;
 `;
+const DetailsTitle = styled.div`
+  font-size: 24px;
+  font-weight:500;
+  padding-bottom:40px;
+`;
+

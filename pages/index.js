@@ -2,11 +2,11 @@ import Head from 'next/head'
 import { useEffect, useState } from 'react';
 import WeatherWidget from '../components/WeatherWidget';
 
-
-
 export default function Home() {
   const [weather, setWeather] = useState(null);
   const [ip, setIp] = useState('');
+  const [coords, setCoords] = useState('');
+
 
   useEffect(() => {
     var options = {
@@ -26,29 +26,32 @@ export default function Home() {
             latitude: data.latitude,
             longitude: data.longitude,
           }
+          , city: data.city
+
         }
-        setIp(dataObject);
+        setCoords(dataObject);
       }
       catch (e) {
         console.log('Please disable your adblock!');
+        return 'error';
       }
-
+      return 'success';
 
     }
-
+    if (ipgrab() == 'error')
+      navigator.geolocation.getCurrentPosition(success, error, options);
 
     function error(err) {
       console.warn(`ERROR(${err.code}): ${err.message}`);
     }
-    ipgrab();
-    navigator.geolocation.getCurrentPosition(success, error, options);
 
   }, []);
-  var crd = '';
+  console.log(weather);
   async function success(pos) {
     try {
       var crd = pos.coords;
-      const url = `https://api.openweathermap.org/data/2.5/onecall?lat=${crd.latitude}&lon=${crd.longitude}&lang=pt&units=metric&appid=1eb616ffcdbab7f52753d435c4b95522`;
+      const api = '271ada6100b3009346e7b3f5276ad6bf';
+      const url = `https://api.openweathermap.org/data/2.5/onecall?lat=${crd.latitude}&lon=${crd.longitude}&lang=pt&units=metric&appid=${api}`;
 
       const response = await fetch(url);
       const data = await response.json();
@@ -60,9 +63,9 @@ export default function Home() {
       setWeather(data);
 
     }
-    catch (e) {  }
+    catch (e) { console.log(e); }
   }
-  success(ip);
+  if (coords && !weather) success(coords);
 
   if (!weather) return <div>Waiting for location...</div>
 
@@ -104,7 +107,8 @@ export default function Home() {
         <Head>
           <title>Temperature of next 7 days</title>
           <link rel="icon" href="/favicon.ico" />
-          <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+          <link rel="preconnect" href="https://fonts.gstatic.com" />
+          <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet"/>          <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
         </Head>
 
         <main>
@@ -115,7 +119,7 @@ export default function Home() {
             config={{
               unit: 'metric',
               locale: 'zh-tw',
-            }}
+            }} city={coords.city}
             forecast={weather.daily}
           />
 

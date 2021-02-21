@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import WeatherBannerTab from './WeatherBannerTab';
 import MiniWeatherCard from './MiniWeatherCard';
 
-const WeatherWidget = ({ config, forecast }) => {
+const WeatherWidget = ({ config, forecast, city }) => {
   const [forecastIdx, setForecastIdx] = useState(0);
 
   if (forecast !== undefined && forecast.length > 0) {
@@ -37,6 +37,7 @@ const WeatherWidget = ({ config, forecast }) => {
       <ContentContainer>
         <WeatherBannerTab
           className=""
+          city={city}
           forecastIdx={forecastIdx}
           forecastOfDay={forecastList[forecastIdx]}
           forecast={forecast}
@@ -101,12 +102,7 @@ WeatherWidget.defaultProps = {
 
 
 const ContentContainer = styled.div`
-  display: block;
-  margin: 10px 5px;
-  text-align: left;
-  border: 1px solid #dddddd;
-  box-shadow: 3px 3px 3px #aaaaaa;
-  padding: 1rem 1rem;
+
 `;
 
 const Next5Container = styled.div`
@@ -114,6 +110,7 @@ const Next5Container = styled.div`
   flex-direction: row;
   margin-top: 1rem;
   justify-content: space-around;
+  color: white;
 `;
 
 export default WeatherWidget;
