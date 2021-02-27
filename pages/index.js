@@ -4,49 +4,41 @@ import WeatherWidget from '../components/WeatherWidget';
 
 export default function Home() {
   const [weather, setWeather] = useState(null);
-  const [ip, setIp] = useState('');
   const [coords, setCoords] = useState('');
-
-
   useEffect(() => {
     var options = {
       enableHighAccuracy: true,
       timeout: 5000,
       maximumAge: 0
     };
+
     async function ipgrab() {
       const api = '5629d244e09540b1837e660ee924bb48';
       const url = `https://api.ipgeolocation.io/ipgeo?apiKey=${api}`;
-      try {
-        const response = await fetch(url);
-        const data = await response.json();
-
-        const dataObject = {
-          coords: {
-            latitude: data.latitude,
-            longitude: data.longitude,
-          }
-          , city: data.city
-
-        }
-        setCoords(dataObject);
+      const response = await fetch(url);
+      const data = await response.json();
+      const dataObject = {
+        coords: {
+          latitude: data.latitude,
+          longitude: data.longitude,
+        }, city: data.city
       }
-      catch (e) {
-        console.log('Please disable your adblock!');
-        return 'error';
-      }
-      return 'success';
-
+      return dataObject;
     }
-    if (ipgrab() == 'error')
-      navigator.geolocation.getCurrentPosition(success, error, options);
 
+  
     function error(err) {
       console.warn(`ERROR(${err.code}): ${err.message}`);
     }
 
+    ipgrab().then(response => {
+      success(response);
+    }).catch(error => {
+      navigator.geolocation.getCurrentPosition(success,error,options);
+    });
+
   }, []);
-  console.log(weather);
+
   async function success(pos) {
     try {
       var crd = pos.coords;
@@ -55,17 +47,15 @@ export default function Home() {
 
       const response = await fetch(url);
       const data = await response.json();
-      //const stringObject = JSON.stringify(data)
 
-      if (!response.ok) {
-        console.log('Something went wrong', data);
-      }
       setWeather(data);
 
     }
     catch (e) { console.log(e); }
   }
-  if (coords && !weather) success(coords);
+
+
+
 
   if (!weather) return <div>Waiting for location...</div>
 
@@ -108,7 +98,7 @@ export default function Home() {
           <title>Temperature of next 7 days</title>
           <link rel="icon" href="/favicon.ico" />
           <link rel="preconnect" href="https://fonts.gstatic.com" />
-          <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet"/>          <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+          <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet" />          <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
         </Head>
 
         <main>

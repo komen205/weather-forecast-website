@@ -82,8 +82,7 @@ const Container = styled.div`
   flex-direction: column;
   cursor: pointer;
   padding: 0.5rem 0.5rem;
-  background: ${(props) => (props.isSelected ? '#F9F9F9' : 'inherit')};
-  border: ${(props) => (props.isSelected ? '1px solid #DDDDDD' : 'none')};
+  background: ${(props) => (props.isSelected ? '#8d8d8d36' : 'inherit')};
 `;
 
 const Text = styled.div`
