@@ -24,7 +24,7 @@ const WeatherBanner = ({ forecastNow, unit, locale, city }) => (
         <HourText>{new Date(forecastNow.dt * 1000).toDateString()}</HourText>
       </TextContainer>
 
-      <BannerIcon src={iconCodeMapping[forecastNow.weather[0].icon]} />
+      <BannerIcon width={100} height={100} src={iconCodeMapping[forecastNow.weather[0].icon]} />
 
 
 
@@ -76,8 +76,6 @@ const BannerContainer = styled.div`
 `;
 
 const BannerIcon = styled.img`
-  width: 100px;
-  height: 100px;
   margin-top: 1.0rem;
   margin-left:auto;
   text-align:left;
