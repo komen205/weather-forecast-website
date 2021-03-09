@@ -81,6 +81,8 @@ const BannerIcon = styled.img`
   margin-top: 1.0rem;
   margin-left:auto;
   text-align:left;
+  aspect-ratio: attr(width) / attr(height);
+
 `;
 
 const Temperature = styled.div`
