@@ -76,8 +76,8 @@ const BannerContainer = styled.div`
 `;
 
 const BannerIcon = styled.img`
-  width: 5rem;
-  height: 5rem;
+  width: 100px;
+  height: 100px;
   margin-top: 1.0rem;
   margin-left:auto;
   text-align:left;
