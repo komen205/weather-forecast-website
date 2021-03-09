@@ -1,11 +1,14 @@
 import Head from 'next/head'
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import WeatherWidget from '../components/WeatherWidget';
 
 export default function Home() {
   const [weather, setWeather] = useState(null);
   const [coords, setCoords] = useState('');
+
   useEffect(() => {
+
+
     var options = {
       enableHighAccuracy: true,
       timeout: 5000,
@@ -91,9 +94,9 @@ export default function Home() {
 
     }
     return (
-
-
       <div className="container">
+        
+
         <Head>
           <title>Temperature of next 7 days</title>
           <link rel="icon" href="/favicon.ico" />
