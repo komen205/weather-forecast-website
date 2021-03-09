@@ -43,7 +43,7 @@ const MiniWeatherCard = ({
       <Root>
         <Container onClick={onClick} isSelected={isSelected}>
           <Text>{date}</Text>
-          <Icon src={iconCodeMapping[first.weather[0].icon]} />
+          <Icon width={100} height={100} src={iconCodeMapping[first.weather[0].icon]} />
           <Text>
             {first.temp.max}
             &deg;
@@ -94,6 +94,5 @@ const Text = styled.div`
 const Icon = styled.img`
   align-self: center;
   line-height: normal;
-  width: 3rem;
-  height: 3rem;
+  aspect-ratio: attr(width) / attr(height);
 `;
